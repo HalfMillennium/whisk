@@ -1,3 +1,4 @@
+/// <reference types="node" />
 // Server-side OpenAI proxy. The API key lives ONLY here (process.env, never a
 // VITE_ var), so it is never shipped to the browser. The client posts
 // { system, user } to /api/ai and gets back { content } — the raw JSON string
