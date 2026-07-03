@@ -28,13 +28,15 @@ export function IntelligencePanel(props: { page: Page }) {
         <dl class="factlist">
           <Show when={p().timePeriod}>
             <div class="factlist__row">
-              <dt><IconClock size={14} /> Time</dt>
+              <span class="factlist__icon"><IconClock size={14} /></span>
+              <dt>Time</dt>
               <dd>{p().timePeriod}</dd>
             </div>
           </Show>
           <Show when={p().place || p().coordinates}>
             <div class="factlist__row">
-              <dt><IconPin size={14} /> Place</dt>
+              <span class="factlist__icon"><IconPin size={14} /></span>
+              <dt>Place</dt>
               <dd>
                 {p().place ??
                   (p().coordinates
@@ -45,6 +47,7 @@ export function IntelligencePanel(props: { page: Page }) {
           </Show>
           <Show when={p().instanceOf.length}>
             <div class="factlist__row">
+              <span class="factlist__icon" aria-hidden="true" />
               <dt>Type</dt>
               <dd>{p().instanceOf.slice(0, 3).join(', ')}</dd>
             </div>

@@ -1,8 +1,7 @@
-import { Show, Suspense, type ParentProps } from 'solid-js';
+import { Suspense, type ParentProps } from 'solid-js';
 import { A, useLocation } from '@solidjs/router';
-import { AI_ENABLED } from '../lib/ai';
 import { SaveDrawer } from './SaveDrawer';
-import { IconSpiral, IconBookmark, IconSparkle, IconSearch } from './icons';
+import { IconWhisk, IconSpiral, IconSearch, IconCite } from './icons';
 
 export function AppShell(props: ParentProps) {
   const location = useLocation();
@@ -14,7 +13,7 @@ export function AppShell(props: ParentProps) {
         <div class="shell nav__inner">
           <A href="/" class="brand" aria-label="whisk home">
             <span class="brand__mark" aria-hidden="true">
-              <IconSpiral size={22} />
+              <IconWhisk size={30} />
             </span>
             <span class="brand__word">whisk</span>
           </A>
@@ -28,20 +27,17 @@ export function AppShell(props: ParentProps) {
               <IconSpiral size={15} />
               <span class="nav__link-label">Rabbit holes</span>
             </A>
+            <A href="/blog" class="nav__link" aria-label="Blog" title="Blog">
+              <IconCite size={15} />
+              <span class="nav__link-label">Blog</span>
+            </A>
+            {/* Collections hidden for v1 — no backend persistence yet. Restore this
+                link (and re-add the IconBookmark import) when saved data ships.
             <A href="/collections" class="nav__link" aria-label="Collections" title="Collections">
               <IconBookmark size={15} />
               <span class="nav__link-label">Collections</span>
-            </A>
+            </A> */}
           </nav>
-
-          <div class="nav__actions">
-            <Show when={AI_ENABLED}>
-              <span class="chip nav__ai" title="AI enrichment is active">
-                <IconSparkle size={13} />
-                AI on
-              </span>
-            </Show>
-          </div>
         </div>
       </header>
 

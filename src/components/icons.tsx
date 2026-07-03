@@ -23,6 +23,14 @@ export const IconSearch = (p: P) => (
   </svg>
 );
 
+// Brand mark — two overlapping rings.
+export const IconWhisk = (p: P) => (
+  <svg {...base(p.size)} {...p} stroke-width="2">
+    <circle cx="8.5" cy="12" r="7" />
+    <circle cx="15.5" cy="12" r="7" />
+  </svg>
+);
+
 export const IconSpiral = (p: P) => (
   <svg {...base(p.size)} {...p}>
     <path d="M12 12a2 2 0 1 1 2 2 4 4 0 1 1-4-4 6 6 0 1 1 6 6" />

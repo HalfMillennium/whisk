@@ -1,0 +1,437 @@
+// whisk blog — content as data.
+//
+// Utility/SEO articles targeting what people actually search around Wikipedia:
+// searching it well, rabbit-holing, research workflows, citations, finding the
+// obscure. Each post opens on a real pain point and weaves whisk in as a
+// workflow accelerator (never an ad). Content blocks use a tiny markdown
+// subset rendered by <BlogContent>: `# / ## / ###` headers, `**bold**`,
+// `[label](href)` links (internal `/…` route or external `https://…`), and
+// `- ` bullet lists. Everything else is a paragraph.
+
+import type { ClusterType } from '../types';
+
+export type BlogArticle = {
+  /** kebab-case URL id. */
+  slug: string;
+  title: string;
+  /** ISO date, 'YYYY-MM-DD'. Fixed literals — never computed at runtime. */
+  date: string;
+  /** 1–2 sentence summary for cards + meta description. */
+  excerpt: string;
+  /** Borrows a whisk cluster color for the card accent. */
+  cluster: ClusterType;
+  /** Drives related-posts (tag overlap). */
+  tags: string[];
+  /** Block strings; see the mini-markdown note above. */
+  content: string[];
+};
+
+export const articles: BlogArticle[] = [
+  {
+    slug: 'how-to-search-wikipedia-more-effectively',
+    title: 'How to Search Wikipedia More Effectively',
+    date: '2026-06-18',
+    excerpt:
+      'Wikipedia holds millions of articles, but its search box rewards the query you already know. Here is how to find the ones you do not.',
+    cluster: 'concepts',
+    tags: ['guide', 'search'],
+    content: [
+      "Wikipedia is one of the largest reference works ever assembled, but its search box was built to answer a narrow question: *which article has this exact title?* Type a proper noun you already know and it works beautifully. Type a half-formed curiosity — \"scientists who were mocked and turned out right,\" \"cities that were abandoned overnight\" — and it mostly shrugs. The knowledge is in there. The search just was not designed to surface it.",
+      'If you have ever felt like Wikipedia hides its most interesting articles behind titles you would have to already know to guess, you are not imagining it. A few habits close most of that gap.',
+      '# Search for the shape of the idea, not the title',
+      "Wikipedia's default search is keyword-and-title matching. It does not understand that \"doomed polar expeditions\" and \"Franklin's lost expedition\" are the same curiosity. So give it keywords that are likely to appear *in the article text*, not just the concept in your head.",
+      'A quick reframe that helps: imagine a sentence that would only appear in the article you want, and search the distinctive words from that sentence.',
+      '- Instead of *interesting old frauds*, try **hoax forgery 19th century**.',
+      '- Instead of *forgotten disasters*, try **industrial disaster death toll obscure**.',
+      '- Instead of *weird small countries*, try **micronation self-declared unrecognized**.',
+      "The more specific and unusual your words, the fewer — and better — the results. Generic words match everything and rank nothing.",
+      '# Follow the thread, do not restart it',
+      "The single biggest upgrade to Wikipedia research is treating the first article as a *doorway*, not a destination. Every article's real value is its links, its \"See also\" section, and the categories at the bottom of the page. Those are hand-curated by editors and point almost exclusively at genuinely related topics.",
+      'When you land on a good article, resist the urge to bounce back to search. Instead:',
+      '- Skim the **See also** section — editors put the best adjacent rabbit holes there.',
+      '- Open the **Categories** row at the very bottom. A category like *Category: Ships lost with all hands* is a hand-built list of exactly the kind of thing you were looking for.',
+      '- Middle-click (open in a new tab) anything that catches your eye so you never lose your place.',
+      '# Let plain language do the work',
+      "The reframing above is exactly the gap [whisk](/) was built to close. Instead of translating your curiosity into keyword-ese, you describe what you are after in plain language and whisk expands it, searches Wikipedia, and clusters the results by type — people, places, events, concepts, and the genuinely obscure \"deep cuts.\" It is the difference between hunting for the right title and being handed a shelf of candidates.",
+      'Try a search that would stump the default box — [scientists mocked for being right](/search?q=scientists+mocked+for+being+right) or [failed utopian communities](/search?q=failed+utopian+communities) — and skim the clusters rather than the first blue link.',
+      '# A repeatable routine',
+      'Put together, an effective Wikipedia session looks like this:',
+      '- Write your curiosity as one plain sentence.',
+      '- Pull out the two or three most *distinctive* words and search those — or hand the whole sentence to whisk.',
+      "- Open three to five promising articles in tabs rather than committing to the first.",
+      '- On each, mine **See also** and **Categories** for the next hop.',
+      '- Save the trail somewhere before the tabs multiply past rescue.',
+      "None of this requires special tools — just the recognition that Wikipedia rewards curiosity you can spell out. Once you can do that, its size stops being a wall and starts being the point.",
+      "Want to go further than a single search? Learn [how to find obscure Wikipedia articles you would never stumble on](/blog/how-to-find-obscure-wikipedia-articles), or see [why Wikipedia's search buries its best articles](/blog/why-wikipedia-search-buries-its-best-articles) in the first place.",
+    ],
+  },
+  {
+    slug: 'what-is-a-wikipedia-rabbit-hole',
+    title: 'What Is a Wikipedia Rabbit Hole (and How to Fall Down a Good One)',
+    date: '2026-06-02',
+    excerpt:
+      'Everyone has lost an evening to Wikipedia. Here is what is actually happening when you do — and how to make it happen on purpose.',
+    cluster: 'other',
+    tags: ['explainer', 'discovery'],
+    content: [
+      "You look up one thing — the boiling point of water at altitude, say — and ninety minutes later you are reading about a 17th-century Danish astronomer who lost his nose in a duel and kept a pet elk. Somewhere in between were maybe fifteen articles you never meant to open. That is a Wikipedia rabbit hole, and it is one of the best things the internet accidentally invented.",
+      'This guide explains what a rabbit hole actually *is*, why Wikipedia is uniquely good at producing them, and how to fall down a good one deliberately instead of waiting for one to ambush you.',
+      '# Why Wikipedia produces rabbit holes',
+      "A rabbit hole is just a chain of links, each one interesting enough to click. Wikipedia is built for exactly this: every article is densely cross-linked to related articles, and those links are placed by human editors who tend to link the *surprising* connections, not just the obvious ones. That is the magic ingredient. A search engine sends you back to a results page; Wikipedia hands you a door in every paragraph.",
+      'The other ingredient is coverage. Because Wikipedia documents the obscure alongside the famous, almost every hop can take you somewhere weirder than where you started. The duel, the nose, the elk — all real, all one or two clicks from a physics stub.',
+      '# What makes a rabbit hole *good*',
+      "Not every chain is worth your evening. The good ones tend to share three qualities:",
+      '- **Momentum** — each article gives you a reason to click the next one, so you never stall.',
+      '- **Drift** — you end up somewhere you could not have predicted from the start. If you can guess the destination, it is a hallway, not a rabbit hole.',
+      '- **Return value** — you come back up with two or three things you genuinely did not know and want to tell someone.',
+      'The enemy of a good rabbit hole is the *hub article* — vast, general pages like a country or a century that link to everything and therefore lead nowhere in particular. Good holes stay specific.',
+      '# How to start one on purpose',
+      "You do not have to wait to be ambushed. A reliable way to trigger a rabbit hole is to start narrow and follow the strangest link, not the most important one.",
+      '- Pick a specific starting point — a single event, person, or object, not a broad topic.',
+      '- On each article, scroll to **See also** and pick the entry that surprises you most.',
+      "- When a hole dries up, back out one step and take a different door.",
+      '# The connection between two things you would never link',
+      "The most satisfying rabbit holes have a destination. There is a peculiar joy in discovering that, say, [Nikola Tesla connects to Coney Island](/path?from=Nikola+Tesla&to=Coney+Island) in only a few hops, or that two people who never met share a chain of unlikely intermediaries. That is what whisk's [rabbit holes](/path) feature is for: give it a start and an end, and it finds the path between them — the shortest one, or, if you prefer, the weirdest.",
+      "You can also start [an open-ended walk from a single topic](/search) and let whisk cluster the surrounding territory so you can see the interesting exits at a glance instead of scrolling.",
+      '# Falling down one right now',
+      'If you want to test all of this in the next five minutes, start somewhere small and specific and give yourself one rule: always take the more surprising link. Or hand whisk two topics that seem unrelated and watch it build the bridge.',
+      "Either way, the point is not to end anywhere in particular. The point is the drift. Once you know how to start one on purpose, you will never be bored on the internet again — which is either a gift or a warning, depending on your evening plans.",
+      'Ready to go deeper? Try [finding the connection between any two Wikipedia topics](/blog/finding-the-connection-between-two-wikipedia-topics), or learn to [build a reading list out of a rabbit hole](/blog/build-a-reading-list-from-a-rabbit-hole) so the good ones do not evaporate.',
+    ],
+  },
+  {
+    slug: 'wikipedia-advanced-search-operators',
+    title: 'Wikipedia Advanced Search: Operators, Filters, and Examples',
+    date: '2026-05-20',
+    excerpt:
+      'The Wikipedia search box quietly supports operators most people never learn. Here are the ones worth memorizing, with examples.',
+    cluster: 'concepts',
+    tags: ['search', 'advanced'],
+    content: [
+      "Most people use Wikipedia's search box the way they use a light switch — one function, no thought. But the same box supports a small, powerful set of operators borrowed from its underlying search engine (CirrusSearch). Learn five or six of them and you can slice Wikipedia with a precision the plain box never hints at.",
+      "This is a practical reference. Each operator below includes a real example you can paste straight into the search field.",
+      '# Match inside the title',
+      "Use `intitle:` to require a word to appear in the article title, not just the body. This is the single most useful operator for cutting noise.",
+      '- `intitle:massacre intitle:forgotten` — articles whose titles contain both words.',
+      '- `intitle:disaster mining` — mining disasters, with *disaster* forced into the title.',
+      '# Search within a category',
+      "Wikipedia's categories are hand-built lists, and `incategory:` lets you search inside one. Wrap multi-word categories in quotes.",
+      '- `incategory:"Maritime incidents" iceberg` — maritime incidents mentioning icebergs.',
+      '- `incategory:"Hoaxes in the United States"` — an instant list of documented American hoaxes.',
+      "Because categories are curated, `incategory:` is often the difference between guessing keywords and browsing a shelf someone already organized for you.",
+      '# Require, exclude, and phrase-match',
+      'The familiar web-search operators all work:',
+      '- `"exact phrase"` — match the words in that order.',
+      '- `volcano -Hawaii` — volcanoes, excluding anything mentioning Hawaii.',
+      '- `expedition +doomed` — force a word that the ranker might otherwise drop.',
+      '# Filter by structure',
+      'A few operators target the article itself rather than its words:',
+      '- `insource:"whaling"` — search the raw wikitext, useful for finding template or citation usage.',
+      '- `linksto:"Antarctica"` — articles that link to a given page.',
+      '- `hastemplate:"Disputed"` — pages carrying a specific maintenance template, like disputed-accuracy flags.',
+      "That last one is a neat trick: `hastemplate` lets you go looking for exactly the articles editors have flagged as contested — a rich vein if you are hunting for controversy.",
+      '# Combining operators',
+      'The real power comes from stacking them. A query like `incategory:"Lost cities" -incategory:"Populated places"` narrows to lost cities that are not also listed as currently inhabited — a distinction the plain box cannot express.',
+      "Operators reward you when you already know the shape of what you want. When you do not — when the query is a vague curiosity rather than a precise filter — a different approach works better.",
+      '# When plain language beats operators',
+      "Operators are surgical, but they demand that you translate a curiosity into machine terms. [whisk](/) takes the opposite bet: describe what you are after in ordinary language, and it does the expansion and clustering for you. The two approaches are complementary — reach for operators when you know precisely what you want and for [whisk's plain-language search](/search) when you are still figuring that out.",
+      "For the everyday habits that make either approach pay off, see [how to search Wikipedia more effectively](/blog/how-to-search-wikipedia-more-effectively). And keep this page bookmarked — the operators are easy to use and easy to forget.",
+    ],
+  },
+  {
+    slug: 'how-to-find-obscure-wikipedia-articles',
+    title: "How to Find Obscure Wikipedia Articles You'd Never Stumble On",
+    date: '2026-05-06',
+    excerpt:
+      'The best articles on Wikipedia are the ones nobody links to from anywhere popular. Here is how to dig them out on purpose.',
+    cluster: 'other',
+    tags: ['discovery', 'obscure'],
+    content: [
+      "There is a whole layer of Wikipedia most people never see: articles about a single obscure shipwreck, a forgotten pretender to a throne, a chemical process nobody uses anymore, a village that voted to abolish itself. These pages are lovingly written and almost never read, because nothing popular links to them and no obvious search returns them. They are the deep cuts, and finding them is a skill.",
+      'Here are the reliable ways to surface the genuinely obscure — the articles you would never stumble on by accident.',
+      '# Browse categories, not keywords',
+      "Keyword search rewards popular articles because popularity feeds ranking. Categories do the opposite: they are flat, hand-built lists where the obscure sits right next to the famous. Start at a category that hints at strangeness and just read the list.",
+      '- *Category: Disappeared people*',
+      '- *Category: Abandoned villages*',
+      '- *Category: Discredited scientific theories*',
+      '- *Category: Ships lost with all hands*',
+      "Every one of those is a curated index of exactly the kind of thing that never surfaces in normal search. Open the category page and skim titles you have never heard of — those are your candidates.",
+      '# Use "What links here" in reverse',
+      "On any article, the sidebar has a *What links here* tool. An article that almost nothing links to is, by definition, obscure. Find a niche topic you like, follow its inbound links backwards, and you tend to land in a neighborhood of equally overlooked pages — obscurity clusters.",
+      '# Chase the maintenance flags',
+      "Some of the most fascinating articles are the contested ones. Searching for pages carrying dispute or citation-needed templates (see the `hastemplate:` operator in our [advanced search guide](/blog/wikipedia-advanced-search-operators)) turns up exactly the topics where the historical record is thin, weird, or fought-over — which is often where the interesting stories live.",
+      '# Sort by what makes something interesting',
+      "The deeper problem is that Wikipedia has no built-in way to say *show me the interesting obscure thing* rather than *the popular exact match*. That is precisely the gap [whisk](/) is built around. It scores results for interestingness — favoring hidden gems, unusual category mixes, and dense narratives over sheer popularity — and files the genuinely obscure into a cluster it literally calls **deep cuts**.",
+      'So a search like [ancient frauds](/search?q=ancient+frauds) or [failed utopian communities](/search?q=failed+utopian+communities) does not just return the famous few; it deliberately surfaces the overlooked. If your goal is to find something you have never heard of, that scoring is the whole point.',
+      '# A dig-it-out routine',
+      'To go obscure-hunting deliberately:',
+      "- Start from a **category**, not a search term.",
+      '- Skim for titles you do not recognize — unfamiliarity is the signal.',
+      '- Use **What links here** to find the neglected neighbors of anything you like.',
+      '- Or let whisk rank for interestingness and read the **deep cuts** cluster first.',
+      "The reward for all this is a particular pleasure: knowing something true, documented, and strange that almost nobody else has read. Wikipedia is full of it. You just have to stop letting popularity do your browsing for you.",
+      "Next, learn [why Wikipedia's search buries these articles](/blog/why-wikipedia-search-buries-its-best-articles) in the first place — understanding the mechanism makes the workarounds obvious.",
+    ],
+  },
+  {
+    slug: 'finding-the-connection-between-two-wikipedia-topics',
+    title: 'Finding the Connection Between Any Two Wikipedia Topics',
+    date: '2026-04-22',
+    excerpt:
+      'Six degrees of separation is not just a party game. Here is how to actually find the chain of links between two Wikipedia articles.',
+    cluster: 'events',
+    tags: ['discovery', 'connections'],
+    content: [
+      "Pick two things that seem unrelated — a Renaissance banker and modern credit cards, a physicist and a seaside amusement park, a spice and a world war. Almost always, there is a short chain of Wikipedia links connecting them. Finding that chain is one of the most satisfying things you can do with an encyclopedia, and it is more doable than it sounds.",
+      'This guide covers how link-paths between articles work, how to trace one by hand, and how to let a tool do it when the by-hand version gets tedious.',
+      '# Why almost everything connects',
+      "Wikipedia is a giant graph: articles are nodes, links are edges. Because popular articles link to hundreds of others and those link onward, the whole thing is densely connected. Studies of the link graph have found that most articles sit within a handful of clicks of each other — the encyclopedia has a small *diameter*, in network terms. The famous \"getting to Philosophy\" phenomenon (follow the first link of almost any article and you tend to arrive at *Philosophy*) is one visible symptom of this structure.",
+      "So the question is rarely *is there a path?* It is almost always *what is the path, and is it interesting?*",
+      '# Tracing a path by hand',
+      "The manual method is a breadth-first search you run in your head and your browser tabs:",
+      '- Open both articles — your **start** and your **target**.',
+      '- From the start, open its most relevant links in tabs. Scan each for a mention of the target or something obviously close to it.',
+      '- Repeat one layer out. Because the graph is dense, you usually find a bridge within two or three layers.',
+      '- Once you spot a connecting article, walk the chain backwards to confirm every link is real.',
+      "This works, and it is genuinely fun for one pair. It also gets old fast, because you are doing by hand what is fundamentally a graph-search problem.",
+      '# The shortest path vs. the weirdest path',
+      "Here is the interesting wrinkle: the *shortest* path is often the least fun. The shortest route between two people usually runs through a giant hub — a country, a century, a huge general article — which is efficient but tells you nothing. The *weirdest* path, the one that stays specific and takes surprising hops, is the one worth reading.",
+      "That distinction is built into whisk's [rabbit holes](/path) feature. Give it a start and a target and it will find the connection — but you can ask for the shortest chain or the weirdest one, and even bias the walk toward people, places, or historical hops. Try [Napoleon to Canning](/path?from=Napoleon&to=Canning) or [Tulip mania to the modern financial bubble](/path?from=Tulip+mania&to=Economic+bubble) and compare the routes.",
+      '# What the connections are good for',
+      'Beyond the pleasure of it, link-paths are genuinely useful:',
+      '- They reveal *why* two things are related, not just *that* they are.',
+      '- They surface intermediate topics you would never have searched for directly — some of the best rabbit holes start as a step in a path.',
+      '- They make a great explanation tool: the chain from A to B is often the clearest way to teach how B came to exist.',
+      "Once you start seeing Wikipedia as a graph rather than a pile of articles, the whole thing feels different — less like a reference book, more like a map with roads you can trace. Every pair of topics becomes a small puzzle with a satisfying answer.",
+      'If the paths themselves become your rabbit hole, learn to [save and organize them into a reading list](/blog/build-a-reading-list-from-a-rabbit-hole) before the tabs get away from you.',
+    ],
+  },
+  {
+    slug: 'using-wikipedia-for-research-workflow',
+    title: 'Using Wikipedia for Research: A Complete Workflow',
+    date: '2026-04-08',
+    excerpt:
+      'Wikipedia is a superb place to start research and a terrible place to end it. Here is a workflow that uses it well.',
+    cluster: 'concepts',
+    tags: ['research', 'workflow'],
+    content: [
+      "Every teacher who ever said \"don't use Wikipedia\" was half right. Wikipedia is not a citable authority — but it is arguably the best *starting point* for research ever built, precisely because it maps a topic and points you at the real sources. The trick is knowing which parts to trust for what, and building a repeatable workflow around them.",
+      "Here is a complete research workflow that treats Wikipedia as the front door, not the whole house.",
+      '# Stage 1: Map the territory',
+      "Before you go deep, get the lay of the land. Read the lead section (the summary above the contents box) of the main article to understand scope and vocabulary. Then read the **contents outline** — the section headings alone tell you how experts divide the topic.",
+      "This is also where discovery tools earn their place. A plain-language search in [whisk](/) returns the surrounding topics clustered by type — the people, places, events, and concepts around your subject — which is a faster way to see the shape of a field than reading one article top to bottom.",
+      '# Stage 2: Harvest the real sources',
+      "This is the step most people skip, and it is where Wikipedia's true value lives. Scroll to the bottom of any serious article and you will find:",
+      '- **References** — the footnoted sources for specific claims. These are your citable material, not the Wikipedia article itself.',
+      '- **Further reading** — books and papers editors consider authoritative.',
+      '- **External links** — archives, primary documents, and official sources.',
+      "Follow the footnote on any claim you actually intend to use. You are looking for the *primary or scholarly source* Wikipedia is summarizing, and then you cite that.",
+      '# Stage 3: Check how solid the ground is',
+      "Not all Wikipedia articles are equally reliable, and the site tells you if you know where to look:",
+      '- The **Talk page** (the "Talk" tab up top) shows what editors argue about — often the exact points of genuine scholarly dispute.',
+      '- **Maintenance flags** ("citation needed," "this section may be biased") mark thin ice.',
+      '- The **View history** tab reveals whether a passage is stable or was edited into existence yesterday.',
+      "Reading the Talk page of a contested topic is one of the fastest ways to understand where the real uncertainty lies.",
+      '# Stage 4: Follow the leads sideways',
+      "Good research is not linear. As you read, you will notice adjacent topics that matter — a predecessor event, a rival figure, an underlying concept. Follow them. This is where Wikipedia's link structure pays off, and where [whisk's rabbit holes](/path) help: tracing the path between two topics in your subject often exposes the connective tissue a single article omits.",
+      'Keep a running list of leads as you go rather than chasing each immediately, so you do not lose the thread of your main question.',
+      '# Stage 5: Capture before you lose it',
+      "Research dies in closed tabs. Before you stop, write down: your one-sentence question, the three to five sources worth citing, and the two or three leads you did not have time to chase. Whether that lives in a notes file or a saved collection, the point is that tomorrow-you can pick up where today-you left off.",
+      '# The one rule',
+      "Cite the sources Wikipedia points to, never Wikipedia itself. If a fact only appears on Wikipedia with no footnote, treat it as unverified. Used that way — as a map to better sources rather than as the source — Wikipedia makes almost any research project faster and broader.",
+      "For the citation mechanics specifically, see [how to cite Wikipedia correctly](/blog/how-to-cite-wikipedia-correctly). And to get more out of the mapping stage, learn [how to search Wikipedia more effectively](/blog/how-to-search-wikipedia-more-effectively).",
+    ],
+  },
+  {
+    slug: 'how-to-cite-wikipedia-correctly',
+    title: 'How to Cite Wikipedia Correctly (and When You Should Not)',
+    date: '2026-03-24',
+    excerpt:
+      'Wikipedia can be cited — carefully, with a permalink, and usually as a last resort. Here is how, and when to reach past it instead.',
+    cluster: 'concepts',
+    tags: ['research', 'citation'],
+    content: [
+      "\"Can I cite Wikipedia?\" is really two questions. Technically, yes — Wikipedia even generates a formatted citation for you. But *should* you, for the thing you are writing? Usually the better move is to cite what Wikipedia cites. This guide covers both: how to cite a Wikipedia article properly when it is appropriate, and when to reach past it instead.",
+      '# When citing Wikipedia is fine',
+      "There are legitimate cases for citing the encyclopedia directly:",
+      '- Informal writing, blog posts, and internal notes where a convenient overview is enough.',
+      '- Writing *about Wikipedia itself* — its coverage, its editing, its consensus on a topic.',
+      '- A quick reference where the stakes of being slightly wrong are low.',
+      "For formal academic or journalistic work, though, Wikipedia is generally not an acceptable source — not because it is unreliable, but because it is a *tertiary* source that summarizes others. Editors themselves will tell you to cite the underlying reference.",
+      '# Use a permalink, always',
+      "Wikipedia articles change by the minute, so a bare URL points at a moving target. Always cite a fixed version:",
+      '- Open the **View history** tab.',
+      '- Click the timestamp of the version you are looking at.',
+      '- Copy *that* URL — it contains an `oldid` and will never change.',
+      "Better still, use the built-in **Cite this page** tool in the left sidebar (under Tools). It generates a permalinked citation in MLA, APA, Chicago, and BibTeX, already pointing at the exact revision you viewed. This is the single most important habit in citing Wikipedia: cite the *revision*, not the article.",
+      '# What a good Wikipedia citation contains',
+      'However you format it, a proper Wikipedia citation includes:',
+      '- The article **title**.',
+      '- **Wikipedia, The Free Encyclopedia** as the publisher.',
+      '- The **date of the revision** you used.',
+      '- The **permalink** (the `oldid` URL), not the live one.',
+      '- Your **date of access**.',
+      "The Cite this page tool fills all of this in for you, which is why it is worth the two clicks.",
+      '# The better habit: cite the source underneath',
+      "For anything that matters, do not cite Wikipedia — cite the reference it drew from. Every well-maintained claim has a footnote. Follow it to the book, paper, or primary document, verify that it actually says what the article claims, and cite *that*. This is more work and dramatically stronger, and it protects you from the occasional case where Wikipedia has misread its own source.",
+      "This is exactly the sourcing-first workflow we lay out in [using Wikipedia for research](/blog/using-wikipedia-for-research-workflow): treat the article as a map to citable material, not as the citation.",
+      '# Finding the right article to cite in the first place',
+      "All of this assumes you have found the most relevant, authoritative article on your topic — which is its own challenge, since Wikipedia's search does not rank for authority. Describing your subject in plain language with [whisk](/) and skimming the clustered results is a fast way to make sure you are citing the *central* article rather than a tangential one you happened to land on.",
+      "Cite carefully, permalink always, and prefer the source underneath — and Wikipedia becomes a research asset rather than an academic liability.",
+    ],
+  },
+  {
+    slug: 'why-wikipedia-search-buries-its-best-articles',
+    title: "Why Wikipedia's Search Buries Its Best Articles",
+    date: '2026-03-10',
+    excerpt:
+      'The most interesting articles on Wikipedia are often the hardest to find. That is not a bug in the content — it is a feature of how search ranks.',
+    cluster: 'events',
+    tags: ['explainer', 'search'],
+    content: [
+      "Wikipedia contains millions of articles, a huge fraction of them genuinely fascinating. So why does searching it so often return the same handful of famous pages while the strange, specific, wonderful ones stay invisible? The answer is not about the writing. It is about how search engines decide what to show — and what \"relevance\" quietly optimizes for.",
+      '# Relevance is mostly a popularity contest',
+      "Every general-purpose search ranker leans on signals that correlate with popularity: how many other pages link to an article, how often it is viewed, how well its title matches your words. These are reasonable defaults — for the average query, the popular answer *is* the right answer. If you search \"Einstein,\" you want the main Einstein article, not an obscure footnote.",
+      "But those same signals are exactly backwards when you are hunting for the interesting-but-obscure. The forgotten shipwreck has few inbound links. The discredited theory gets few views. The village that voted to abolish itself has a title you would never think to type. Popularity-based ranking does not just fail to surface these — it actively sorts them to the bottom.",
+      '# Title matching punishes curiosity',
+      "Wikipedia's search is especially title-oriented: it is superb at *known-item* lookup (you know the article exists and roughly what it is called) and weak at *discovery* (you have a curiosity but no title). Since the most interesting obscure articles have, by definition, titles you do not already know, the one search behavior Wikipedia does best is the one that cannot help you find them.",
+      '# Metadata that describes is not metadata that ranks',
+      "Wikipedia is rich in *descriptive* structure — categories, infoboxes, Wikidata properties, coordinates, dates. In principle this could power wonderful discovery: *show me abandoned places in South America founded before 1600.* In practice, the default search barely uses it for ranking. The structure exists to organize and describe, not to sort by how interesting something is. So the metadata that could surface a hidden gem mostly just sits there.",
+      "This is the deeper version of a problem every archive faces: good material plus ranking that optimizes for the wrong thing equals material nobody finds.",
+      '# What "interesting" would have to mean',
+      "To surface the best obscure articles, a search would have to rank on signals that popularity ignores:",
+      '- **Hidden-gem score** — quality and depth that is *inversely* related to how much attention the article gets.',
+      '- **Unusual category mix** — articles sitting at the intersection of categories that rarely co-occur are often the strange, specific ones.',
+      '- **Narrative density** — pages packed with events and specifics rather than definitions.',
+      '- **Dispute signals** — contested or flagged topics, which are frequently the most interesting.',
+      "None of these correlate with popularity. Some are *anti*-correlated with it. That is the whole point.",
+      '# Ranking for interestingness on purpose',
+      "This gap is the reason [whisk](/) exists. Instead of ranking Wikipedia by popularity and title match, it scores results on exactly the signals above — hidden-gem, unusual mix, narrative density, dispute — and files the genuinely obscure into a **deep cuts** cluster. It is not a better index of Wikipedia; it is a *different question* asked of the same content: not \"what is the popular match?\" but \"what here is most worth your attention?\"",
+      'You can feel the difference on a vague, discovery-shaped query like [scientists mocked for being right](/search?q=scientists+mocked+for+being+right) — the kind of search the default box handles worst.',
+      "So the next time Wikipedia's search seems to hide its best material, remember: the material is right there. It is the ranking, not the encyclopedia, that decided popularity was the same thing as relevance. Once you know that, you can search around it — see [how to find obscure Wikipedia articles](/blog/how-to-find-obscure-wikipedia-articles) for the practical workarounds.",
+    ],
+  },
+  {
+    slug: 'best-wikipedia-companion-tools-2026',
+    title: 'Best Wikipedia Companion Tools for Deeper Exploration (2026)',
+    date: '2026-02-24',
+    excerpt:
+      'Wikipedia is a platform, and a small ecosystem of tools makes it far more explorable. Here are the ones worth knowing in 2026.',
+    cluster: 'other',
+    tags: ['tools', 'comparison'],
+    content: [
+      "Wikipedia is not just a website; it is an open dataset with an API, structured metadata, and a link graph — which means a whole ecosystem of tools has grown up to explore it in ways the main site does not. If you use Wikipedia for more than settling arguments, a few of these are worth knowing. Here is a practical guide for 2026, grouped by what you are actually trying to do.",
+      '# For structured, queryable facts',
+      "**Wikidata** is Wikipedia's structured-data sibling: every fact as a queryable property. Using its SPARQL endpoint you can ask questions Wikipedia cannot answer directly — *all lighthouses built before 1850, sorted by height* — and get a table back. It is powerful and genuinely hard to learn, but nothing else touches it for precise, filterable queries over facts.",
+      '# For seeing the link graph',
+      "Wikipedia is a graph, and some tools let you *see* it. Utilities that visualize the shortest link-path between two articles turn the encyclopedia into a navigable map and make the six-degrees game concrete. They are delightful, though most focus on the single question of the shortest route.",
+      '# For reading and browsing',
+      "A category of tools exists purely to make Wikipedia nicer to *read* — cleaner typography, better mobile layouts, map-based browsing of geotagged articles, or surfacing a random article filtered by topic. These do not change what you can find; they change how pleasant it is to wander.",
+      '# For discovery — finding what you did not know to look for',
+      "This is the gap most tools leave open. Wikidata answers precise questions; graph tools show you paths; readers make browsing pretty. But none of them help with the fuzzy, human version of the problem: *I have a vague curiosity and I want to be handed the interesting stuff.*",
+      "That is the niche [whisk](/) fills. It takes plain-language curiosity, searches Wikipedia, and does two things the raw site does not:",
+      '- **Clusters** results by type — people, places, events, concepts, and deep cuts — so you can see the shape of a topic at a glance.',
+      '- **Ranks for interestingness** rather than popularity, deliberately surfacing hidden gems instead of the same famous pages.',
+      "It also finds the [connection between two topics](/path) and lets you ask for the weirdest path, not just the shortest. Think of it as the discovery layer the others assume you do not need.",
+      '# How to choose',
+      'A rough guide to which tool for which job:',
+      '- Need a **precise, filterable answer** over facts? Reach for **Wikidata**.',
+      '- Want to **see the shortest link** between two pages? A graph/path visualizer.',
+      '- Just want Wikipedia to **read better**? A reader or map browser.',
+      '- Have a **vague curiosity** and want the interesting obscure thing? That is [whisk](/search).',
+      "None of these replace Wikipedia — they all sit on top of it, because Wikipedia's openness is what makes them possible in the first place. The best setup usually combines two or three: Wikidata for hard facts, a discovery layer for exploration, and the main site for deep reading.",
+      "New to some of these ideas? Start with [what a Wikipedia rabbit hole is](/blog/what-is-a-wikipedia-rabbit-hole), then come back and pick your tools.",
+    ],
+  },
+  {
+    slug: 'explore-wikipedia-by-place-era-category',
+    title: 'How to Explore Wikipedia by Place, Era, and Category',
+    date: '2026-02-10',
+    excerpt:
+      'Wikipedia is not just an alphabet of articles — it is organized by geography, time, and category. Browse along those axes and it opens up.',
+    cluster: 'places',
+    tags: ['discovery', 'workflow'],
+    content: [
+      "Most people navigate Wikipedia one article at a time, arriving by search and leaving by link. But underneath the flat list of articles are three powerful organizing axes — *place*, *time*, and *category* — and browsing along them turns Wikipedia from a dictionary into an atlas. Here is how to use each one.",
+      '# Explore by place',
+      "A huge share of Wikipedia articles are geotagged with coordinates — every city, battlefield, shipwreck, monument, and abandoned settlement that has a location. That geographic structure lets you browse by *where* instead of *what*.",
+      '- Use the **coordinates** in an article (top right) to jump to a map view showing every nearby geotagged article — a great way to find the forgotten things around a famous place.',
+      '- Follow **place-based categories** like *Category: Ghost towns in Nevada* to get a curated regional list.',
+      "Geography is especially good for discovery because proximity surfaces the obscure: the famous battlefield you searched for sits on a map dotted with skirmishes, monuments, and villages you never would have typed into a search box.",
+      '# Explore by era',
+      "Time is the second axis. Wikipedia's date categories and timeline articles let you take a *slice of history* rather than a single subject.",
+      '- Year and decade categories (*Category: 17th-century disasters*, *Category: 1920s scandals*) collect everything from a period in one place.',
+      '- \"Timeline of…\" and \"…by year\" articles give you a chronological spine you can walk forward or backward.',
+      "Browsing by era is how you discover that things you think of as unrelated were happening at the same moment — one of the most reliable sources of a good rabbit hole.",
+      '# Explore by category',
+      "Categories are the connective tissue of Wikipedia: hand-built, hierarchical lists at the bottom of every article. They are the single most underused discovery tool on the site. Any category page is a curated index, and categories nest — so *Category: Maritime incidents* contains subcategories that contain the specific articles.",
+      "Because categories are made by editors rather than algorithms, they group things by *meaning*, not popularity — which is why they are so good at surfacing the obscure. We go deeper on this in [how to find obscure Wikipedia articles](/blog/how-to-find-obscure-wikipedia-articles).",
+      '# Combining the axes',
+      "The real magic is intersecting them: *abandoned places* (category) *in South America* (place) *founded before 1600* (era). Wikipedia's own interface cannot express that query directly — you would have to browse each axis separately and find the overlap by hand, or drop into Wikidata and write a structured query.",
+      "This is exactly the multi-axis exploration [whisk](/) is designed for. Because it reads each result's structured metadata — cluster type, location, time period — it can present a topic sorted along these axes for you, so the places, eras, and categories around your subject are visible at a glance rather than buried in sidebars. A search like [abandoned cities](/search?q=abandoned+cities) comes back already organized by the dimensions you would otherwise browse one at a time.",
+      '# A browsing routine',
+      'To explore along the axes deliberately:',
+      "- Start from a **category** page and read the list, not just the lead article.",
+      '- On any geotagged article, open the **map** and look at what surrounds it.',
+      '- Use **era categories** to see what else was happening at the same time.',
+      '- Let a discovery layer collapse all three axes into one view when you want the overlap.',
+      "Learn to move along place, time, and category, and Wikipedia stops feeling like a pile of articles and starts feeling like a landscape you can walk in any direction.",
+    ],
+  },
+  {
+    slug: 'build-a-reading-list-from-a-rabbit-hole',
+    title: 'Build a Reading List From a Wikipedia Rabbit Hole',
+    date: '2026-01-27',
+    excerpt:
+      'The best rabbit holes vanish the moment you close the tabs. Here is how to turn a night of wandering into something you keep.',
+    cluster: 'people',
+    tags: ['workflow', 'discovery'],
+    content: [
+      "Everyone knows the feeling: a glorious two-hour Wikipedia rabbit hole, forty tabs deep, and then a browser crash — or just bedtime — and it is all gone. You remember there was something about a duel and an elk, but the trail is lost. The problem is not the wandering; the wandering is the fun part. The problem is that rabbit holes are ephemeral by default. Here is how to make them stick.",
+      '# Capture as you go, not at the end',
+      "The single biggest mistake is planning to \"save everything later.\" Later never comes, and by the end you cannot reconstruct the order anyway. Instead, capture lightly *while* you wander:",
+      '- When an article genuinely surprises you, save it in one action before moving on.',
+      '- Jot a three-word note on *why* it caught you — \"lost its nose in a duel\" is enough to bring the whole thing back.',
+      '- Do not stop to organize. Organizing mid-hole kills the momentum that makes a rabbit hole good.',
+      '# Keep the trail, not just the pages',
+      "A reading list of isolated articles loses the best part: the *connections* between them. What made the hole magical was the path — how you got from a physics stub to a Danish astronomer. So capture the shape, not just the nodes. Even a rough arrow-chain (*boiling point → altitude → mountaineering → Tycho Brahe → the elk*) preserves the logic you can otherwise never rebuild.",
+      "This is where saving a whole *path* beats saving individual pages. In whisk, when you trace a [rabbit hole between two topics](/path), you can keep the entire trail — every hop and the reason for it — as one saved item, so the connection survives along with the destinations.",
+      '# Turn the pile into a list worth returning to',
+      "Once the hole is done, a five-minute pass turns a mess into a keeper:",
+      '- **Prune** the tabs that were dead ends. Not everything you clicked deserves to be saved.',
+      '- **Order** the survivors — chronologically, by theme, or by the path you actually took.',
+      '- **Title** the collection so future-you knows what it was — \"Scandinavian eccentrics\" beats \"Untitled 4.\"',
+      "The goal is a list you would actually reopen, not a graveyard of links.",
+      '# Make it a repeatable habit',
+      "The people who get the most out of Wikipedia treat rabbit holes as a *source*, not a distraction. Every good hole becomes a small curated collection: a reading list to finish later, raw material for something you are writing, or just a set of stories to tell. Saving [whisk collections](/) as you explore turns idle wandering into an accumulating library of the strange and specific.",
+      "So the next time you feel a rabbit hole coming on, do not fight it — but do not let it evaporate either. Save as you go, keep the trail, prune and title at the end, and the two hours you were about to \"waste\" become something you get to keep.",
+      "New to deliberate wandering? Start with [what a Wikipedia rabbit hole is and how to fall down a good one](/blog/what-is-a-wikipedia-rabbit-hole), then come here to make the good ones permanent.",
+    ],
+  },
+];
+
+/** Look up a single article by slug. */
+export function getArticle(slug: string): BlogArticle | undefined {
+  return articles.find((a) => a.slug === slug);
+}
+
+/** Articles sorted newest-first — used by the index and prev/next nav. */
+export function articlesByDate(): BlogArticle[] {
+  return [...articles].sort((a, b) => (a.date < b.date ? 1 : -1));
+}
+
+/** Related posts by tag overlap, highest first, excluding the current slug. */
+export function relatedArticles(slug: string, n = 3): BlogArticle[] {
+  const current = getArticle(slug);
+  if (!current) return [];
+  const tags = new Set(current.tags);
+  return articles
+    .filter((a) => a.slug !== slug)
+    .map((a) => ({
+      article: a,
+      score: a.tags.reduce((acc, t) => acc + (tags.has(t) ? 1 : 0), 0),
+    }))
+    .sort((a, b) => b.score - a.score || (a.article.date < b.article.date ? 1 : -1))
+    .slice(0, n)
+    .map((x) => x.article);
+}
