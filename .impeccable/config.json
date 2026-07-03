@@ -1,0 +1,20 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "geist",
+        "reason": "User explicitly chose Geist as the UI sans",
+        "createdAt": "2026-07-03T06:20:51.964Z"
+      },
+      {
+        "rule": "overused-font",
+        "value": "fraunces",
+        "reason": "User loves the Fraunces logo wordmark; kept as deliberate serif accent",
+        "createdAt": "2026-07-03T06:20:52.009Z"
+      }
+    ]
+  }
+}
