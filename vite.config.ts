@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite'
 import solid from 'vite-plugin-solid'
 import { runAi, type AiBody } from './api/ai.ts'
+import { buildSitemap, buildRobots } from './scripts/sitemap.ts'
 
 // Serves /api/ai during `npm run dev`, mirroring the Vercel Serverless Function
 // so local behavior matches production. The key is read server-side (Node) from
@@ -36,8 +37,37 @@ function aiDevProxy() {
   }
 }
 
+// Generates /sitemap.xml + /robots.txt from the blog articles: emitted into
+// dist/ on build, and served live during `npm run dev`. Adding an article to
+// src/lib/blog/articles.ts updates the sitemap automatically.
+function sitemapPlugin() {
+  return {
+    name: 'whisk-sitemap',
+    configureServer(server: any) {
+      server.middlewares.use((req: any, res: any, next: any) => {
+        const url = (req.url || '').split('?')[0]
+        if (url === '/sitemap.xml') {
+          res.setHeader('content-type', 'application/xml')
+          res.end(buildSitemap())
+          return
+        }
+        if (url === '/robots.txt') {
+          res.setHeader('content-type', 'text/plain')
+          res.end(buildRobots())
+          return
+        }
+        next()
+      })
+    },
+    generateBundle(this: any) {
+      this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: buildSitemap() })
+      this.emitFile({ type: 'asset', fileName: 'robots.txt', source: buildRobots() })
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [solid(), aiDevProxy()],
+  plugins: [solid(), aiDevProxy(), sitemapPlugin()],
   test: {
     environment: 'jsdom',
     globals: true,

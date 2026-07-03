@@ -8,7 +8,7 @@
 // `[label](href)` links (internal `/…` route or external `https://…`), and
 // `- ` bullet lists. Everything else is a paragraph.
 
-import type { ClusterType } from '../types';
+import type { ClusterType } from '../types.ts';
 
 export type BlogArticle = {
   /** kebab-case URL id. */
