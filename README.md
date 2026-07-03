@@ -26,11 +26,16 @@ npm run preview   # serve the production build
 Create a `.env` with:
 
 ```
-VITE_OPENAI_API_KEY=sk-...
-VITE_OPENAI_MODEL=gpt-4o-mini   # optional
+OPENAI_API_KEY=sk-...            # server-side only — never bundled
+OPENAI_MODEL=gpt-4o-mini         # optional, defaults to gpt-4o-mini
+VITE_AI_ENABLED=true             # non-secret UI flag
 ```
 
-This enables sharper query expansion, cluster labels, "why matched" reasons, and trail narration. **The key ships in the client bundle** — local use only; put a proxy in front before deploying publicly.
+This enables sharper query expansion, cluster labels, "why matched" reasons, and trail narration.
+
+**The key never reaches the browser.** All OpenAI calls go through a server-side proxy at `/api/ai` ([api/ai.ts](api/ai.ts)) that reads `OPENAI_API_KEY` from server env only. Locally, a dev middleware in [vite.config.ts](vite.config.ts) serves the same endpoint so `npm run dev` works unchanged. `VITE_AI_ENABLED` is a non-secret flag that toggles the AI UI and lets the client skip calls when AI is off.
+
+**Deploying to Vercel:** the `/api` directory is auto-detected as a Serverless Function. Set `OPENAI_API_KEY`, `OPENAI_MODEL` (optional), and `VITE_AI_ENABLED=true` in the project's Environment Variables — do **not** define any `VITE_OPENAI_*` var.
 
 ## Design
 

@@ -2,47 +2,31 @@
 // whisk is fully functional with no key. AI only expands and explains — it
 // never replaces Wikipedia content, and everything still links to the source.
 //
-// SECURITY: the key is read from a VITE_ env var and therefore ships in the
-// client bundle. Fine for local/personal use; put a proxy in front before any
-// public deploy. See .env.example / README.md.
+// SECURITY: the OpenAI key is NOT in the client. All calls go through the
+// server-side proxy at /api/ai (api/ai.ts), which holds OPENAI_API_KEY in
+// server env only. VITE_AI_ENABLED is a non-secret UI flag. See README.md.
 
-import type OpenAI from 'openai';
 import type { Page } from './types';
 
-const KEY = import.meta.env.VITE_OPENAI_API_KEY as string | undefined;
-const MODEL = (import.meta.env.VITE_OPENAI_MODEL as string) || 'gpt-4o-mini';
-
-export const AI_ENABLED = !!KEY;
-
-let client: OpenAI | null = null;
-// The OpenAI SDK is heavy, so we only import it lazily when a call actually fires.
-async function ai(): Promise<OpenAI | null> {
-  if (!KEY) return null;
-  if (!client) {
-    const { default: OpenAIClient } = await import('openai');
-    client = new OpenAIClient({ apiKey: KEY, dangerouslyAllowBrowser: true });
-  }
-  return client;
-}
+// Non-secret build-time flag: set VITE_AI_ENABLED=true wherever the server-side
+// OPENAI_API_KEY is configured, so the UI reflects AI and we skip pointless
+// requests when it is off.
+export const AI_ENABLED = import.meta.env.VITE_AI_ENABLED === 'true';
 
 async function chatJSON<T>(system: string, user: string): Promise<T | null> {
-  const c = await ai();
-  if (!c) return null;
+  if (!AI_ENABLED) return null;
   try {
-    const res = await c.chat.completions.create({
-      model: MODEL,
-      temperature: 0.7,
-      response_format: { type: 'json_object' },
-      messages: [
-        { role: 'system', content: system },
-        { role: 'user', content: user },
-      ],
+    const resp = await fetch('/api/ai', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ system, user }),
     });
-    const text = res.choices[0]?.message?.content;
-    if (!text) return null;
-    return JSON.parse(text) as T;
+    if (!resp.ok) return null;
+    const data = (await resp.json()) as { content?: string | null };
+    if (!data.content) return null;
+    return JSON.parse(data.content) as T;
   } catch (err) {
-    console.warn('[whisk] OpenAI call failed, using fallback:', err);
+    console.warn('[whisk] AI call failed, using fallback:', err);
     return null;
   }
 }
