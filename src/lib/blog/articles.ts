@@ -30,7 +30,7 @@ export const articles: BlogArticle[] = [
   {
     slug: 'how-to-search-wikipedia-more-effectively',
     title: 'How to Search Wikipedia More Effectively',
-    date: '2026-06-18',
+    date: '2026-07-03',
     excerpt:
       'Wikipedia holds millions of articles, but its search box rewards the query you already know. Here is how to find the ones you do not.',
     cluster: 'concepts',
@@ -68,7 +68,7 @@ export const articles: BlogArticle[] = [
   {
     slug: 'what-is-a-wikipedia-rabbit-hole',
     title: 'What Is a Wikipedia Rabbit Hole (and How to Fall Down a Good One)',
-    date: '2026-06-02',
+    date: '2026-07-03',
     excerpt:
       'Everyone has lost an evening to Wikipedia. Here is what is actually happening when you do — and how to make it happen on purpose.',
     cluster: 'other',
@@ -102,7 +102,7 @@ export const articles: BlogArticle[] = [
   {
     slug: 'wikipedia-advanced-search-operators',
     title: 'Wikipedia Advanced Search: Operators, Filters, and Examples',
-    date: '2026-05-20',
+    date: '2026-07-03',
     excerpt:
       'The Wikipedia search box quietly supports operators most people never learn. Here are the ones worth memorizing, with examples.',
     cluster: 'concepts',
@@ -141,7 +141,7 @@ export const articles: BlogArticle[] = [
   {
     slug: 'how-to-find-obscure-wikipedia-articles',
     title: "How to Find Obscure Wikipedia Articles You'd Never Stumble On",
-    date: '2026-05-06',
+    date: '2026-07-03',
     excerpt:
       'The best articles on Wikipedia are the ones nobody links to from anywhere popular. Here is how to dig them out on purpose.',
     cluster: 'other',
@@ -176,7 +176,7 @@ export const articles: BlogArticle[] = [
   {
     slug: 'finding-the-connection-between-two-wikipedia-topics',
     title: 'Finding the Connection Between Any Two Wikipedia Topics',
-    date: '2026-04-22',
+    date: '2026-07-03',
     excerpt:
       'Six degrees of separation is not just a party game. Here is how to actually find the chain of links between two Wikipedia articles.',
     cluster: 'events',
@@ -209,7 +209,7 @@ export const articles: BlogArticle[] = [
   {
     slug: 'using-wikipedia-for-research-workflow',
     title: 'Using Wikipedia for Research: A Complete Workflow',
-    date: '2026-04-08',
+    date: '2026-07-03',
     excerpt:
       'Wikipedia is a superb place to start research and a terrible place to end it. Here is a workflow that uses it well.',
     cluster: 'concepts',
@@ -245,7 +245,7 @@ export const articles: BlogArticle[] = [
   {
     slug: 'how-to-cite-wikipedia-correctly',
     title: 'How to Cite Wikipedia Correctly (and When You Should Not)',
-    date: '2026-03-24',
+    date: '2026-07-03',
     excerpt:
       'Wikipedia can be cited — carefully, with a permalink, and usually as a last resort. Here is how, and when to reach past it instead.',
     cluster: 'concepts',
@@ -283,7 +283,7 @@ export const articles: BlogArticle[] = [
   {
     slug: 'why-wikipedia-search-buries-its-best-articles',
     title: "Why Wikipedia's Search Buries Its Best Articles",
-    date: '2026-03-10',
+    date: '2026-07-03',
     excerpt:
       'The most interesting articles on Wikipedia are often the hardest to find. That is not a bug in the content — it is a feature of how search ranks.',
     cluster: 'events',
@@ -314,7 +314,7 @@ export const articles: BlogArticle[] = [
   {
     slug: 'best-wikipedia-companion-tools-2026',
     title: 'Best Wikipedia Companion Tools for Deeper Exploration (2026)',
-    date: '2026-02-24',
+    date: '2026-07-03',
     excerpt:
       'Wikipedia is a platform, and a small ecosystem of tools makes it far more explorable. Here are the ones worth knowing in 2026.',
     cluster: 'other',
@@ -346,7 +346,7 @@ export const articles: BlogArticle[] = [
   {
     slug: 'explore-wikipedia-by-place-era-category',
     title: 'How to Explore Wikipedia by Place, Era, and Category',
-    date: '2026-02-10',
+    date: '2026-07-03',
     excerpt:
       'Wikipedia is not just an alphabet of articles — it is organized by geography, time, and category. Browse along those axes and it opens up.',
     cluster: 'places',
@@ -381,7 +381,7 @@ export const articles: BlogArticle[] = [
   {
     slug: 'build-a-reading-list-from-a-rabbit-hole',
     title: 'Build a Reading List From a Wikipedia Rabbit Hole',
-    date: '2026-01-27',
+    date: '2026-07-03',
     excerpt:
       'The best rabbit holes vanish the moment you close the tabs. Here is how to turn a night of wandering into something you keep.',
     cluster: 'people',
