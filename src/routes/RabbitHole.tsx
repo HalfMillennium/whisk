@@ -5,6 +5,7 @@ import type { PathMode, RabbitHole as Hole } from '../lib/types';
 import { RabbitHoleGraph } from '../components/RabbitHoleGraph';
 import { EmptyState, RouteError } from '../components/bits';
 import { openSave } from '../stores/saveDrawer';
+import { COLLECTIONS_ENABLED } from '../stores/collections';
 import { IconSpiral, IconBookmark, IconArrow, IconClock, IconSparkle } from '../components/icons';
 
 const MODES: Array<{ id: PathMode; label: string }> = [
@@ -170,9 +171,11 @@ export default function RabbitHole() {
                         <Show when={timeline()}> · ordered by era, not by trail</Show>
                       </p>
                     </div>
-                    <button type="button" class="btn" onClick={savePath}>
-                      <IconBookmark size={16} /> Save trail
-                    </button>
+                    <Show when={COLLECTIONS_ENABLED}>
+                      <button type="button" class="btn" onClick={savePath}>
+                        <IconBookmark size={16} /> Save trail
+                      </button>
+                    </Show>
                   </div>
                   <RabbitHoleGraph hole={h} hideJumps={timeline()} />
                 </>

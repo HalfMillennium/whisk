@@ -4,7 +4,7 @@ import { getPage } from '../lib/wiki/page';
 import { moreLike } from '../lib/wiki/search';
 import { enrichTitles } from '../lib/wiki/page';
 import { openSave } from '../stores/saveDrawer';
-import { savedIn } from '../stores/collections';
+import { savedIn, COLLECTIONS_ENABLED } from '../stores/collections';
 import { IntelligencePanel } from '../components/IntelligencePanel';
 import { ResultCard } from '../components/ResultCard';
 import { SkeletonGrid, EmptyState, ClusterBadge, RouteError } from '../components/bits';
@@ -74,25 +74,27 @@ export default function Article() {
                         <IconSpiral size={16} />
                         Start a rabbit hole
                       </A>
-                      <button
-                        type="button"
-                        class="btn"
-                        classList={{ 'is-saved': isSaved() }}
-                        onClick={() =>
-                          openSave({
-                            kind: 'page',
-                            title: pg().title,
-                            description: pg().description,
-                            href: href(),
-                            addedAt: Date.now(),
-                          })
-                        }
-                      >
-                        <Show when={isSaved()} fallback={<IconBookmark size={16} />}>
-                          <IconBookmarkFilled size={16} />
-                        </Show>
-                        {isSaved() ? 'Saved' : 'Save'}
-                      </button>
+                      <Show when={COLLECTIONS_ENABLED}>
+                        <button
+                          type="button"
+                          class="btn"
+                          classList={{ 'is-saved': isSaved() }}
+                          onClick={() =>
+                            openSave({
+                              kind: 'page',
+                              title: pg().title,
+                              description: pg().description,
+                              href: href(),
+                              addedAt: Date.now(),
+                            })
+                          }
+                        >
+                          <Show when={isSaved()} fallback={<IconBookmark size={16} />}>
+                            <IconBookmarkFilled size={16} />
+                          </Show>
+                          {isSaved() ? 'Saved' : 'Save'}
+                        </button>
+                      </Show>
                       <a class="btn" href={pg().url} target="_blank" rel="noreferrer">
                         <IconExternal size={16} />
                         Wikipedia

@@ -4,6 +4,11 @@
 import { createStore } from 'solid-js/store';
 import type { Collection, CollectionItem } from '../lib/types';
 
+// Collections aren't shipped yet (no backend persistence). Flip to true to
+// re-expose the Save buttons across the app. The Collections nav link is
+// separately gated in AppShell.tsx.
+export const COLLECTIONS_ENABLED = false;
+
 const KEY = 'whisk:collections';
 
 function load(): Collection[] {

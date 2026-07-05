@@ -2,7 +2,7 @@ import { For, Show } from 'solid-js';
 import { A } from '@solidjs/router';
 import type { Page } from '../lib/types';
 import { openSave } from '../stores/saveDrawer';
-import { savedIn } from '../stores/collections';
+import { savedIn, COLLECTIONS_ENABLED } from '../stores/collections';
 import { InterestMeter, ClusterBadge, DisputeFlag } from './bits';
 import { IconBookmark, IconBookmarkFilled, IconClock, IconPin, IconSpiral } from './icons';
 
@@ -70,25 +70,27 @@ export function ResultCard(props: { page: Page; rank?: number; feature?: boolean
           <IconSpiral size={15} />
           Start rabbit hole
         </A>
-        <button
-          type="button"
-          class="icon-btn card__save"
-          classList={{ 'is-saved': isSaved() }}
-          aria-label={isSaved() ? 'Saved — manage' : 'Save to collection'}
-          onClick={() =>
-            openSave({
-              kind: 'page',
-              title: p().title,
-              description: p().description,
-              href: href(),
-              addedAt: Date.now(),
-            })
-          }
-        >
-          <Show when={isSaved()} fallback={<IconBookmark size={16} />}>
-            <IconBookmarkFilled size={16} />
-          </Show>
-        </button>
+        <Show when={COLLECTIONS_ENABLED}>
+          <button
+            type="button"
+            class="icon-btn card__save"
+            classList={{ 'is-saved': isSaved() }}
+            aria-label={isSaved() ? 'Saved — manage' : 'Save to collection'}
+            onClick={() =>
+              openSave({
+                kind: 'page',
+                title: p().title,
+                description: p().description,
+                href: href(),
+                addedAt: Date.now(),
+              })
+            }
+          >
+            <Show when={isSaved()} fallback={<IconBookmark size={16} />}>
+              <IconBookmarkFilled size={16} />
+            </Show>
+          </button>
+        </Show>
       </div>
     </article>
   );
