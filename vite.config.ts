@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite'
 import solid from 'vite-plugin-solid'
 import { runAi, type AiBody } from './api/ai.ts'
+import { runTrends } from './api/trends.ts'
 import { buildSitemap, buildRobots } from './scripts/sitemap.ts'
 
 // Serves /api/ai during `npm run dev`, mirroring the Vercel Serverless Function
@@ -37,6 +38,34 @@ function aiDevProxy() {
   }
 }
 
+// Serves /api/trends during `npm run dev`, mirroring the Vercel Serverless
+// Function so local behavior matches production. Proxies the Google Trends RSS
+// feed (not CORS-accessible from the browser) to a clean JSON list.
+function trendsDevProxy() {
+  return {
+    name: 'whisk-trends-dev-proxy',
+    configureServer(server: any) {
+      const env = loadEnv(server.config.mode, process.cwd(), '')
+      if (env.TRENDS_GEO && !process.env.TRENDS_GEO) process.env.TRENDS_GEO = env.TRENDS_GEO
+
+      server.middlewares.use('/api/trends', async (req: any, res: any, next: any) => {
+        if (req.method && req.method !== 'GET') return next()
+        try {
+          const geo = new URL(req.url, 'http://localhost').searchParams.get('geo') ?? undefined
+          const { status, json } = await runTrends(geo)
+          res.statusCode = status
+          res.setHeader('content-type', 'application/json')
+          res.end(JSON.stringify(json))
+        } catch {
+          res.statusCode = 502
+          res.setHeader('content-type', 'application/json')
+          res.end(JSON.stringify({ error: 'fetch_failed' }))
+        }
+      })
+    },
+  }
+}
+
 // Generates /sitemap.xml + /robots.txt from the blog articles: emitted into
 // dist/ on build, and served live during `npm run dev`. Adding an article to
 // src/lib/blog/articles.ts updates the sitemap automatically.
@@ -67,7 +96,7 @@ function sitemapPlugin() {
 }
 
 export default defineConfig({
-  plugins: [solid(), aiDevProxy(), sitemapPlugin()],
+  plugins: [solid(), aiDevProxy(), trendsDevProxy(), sitemapPlugin()],
   test: {
     environment: 'jsdom',
     globals: true,

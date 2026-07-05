@@ -1,8 +1,9 @@
-/* whisk design tokens — Poolsuite ☼ re-skin.
+/* whisk design tokens — "Cream + Jade".
    Mood: "a 1986 Macintosh desktop by a Miami pool." Warm cream paper, never
-   white screens; ink-brown strokes, never pure black; a coral-led sunset
-   spectrum of accents; chunky 2px strokes and hard offset shadows. Type is
-   Baloo 2 (chunky display), Nunito (warm body/UI) and Silkscreen (pixel chrome).
+   white screens; ink-brown strokes, never pure black; a JADE/teal-led primary
+   with an amber pop (deliberately off-coral so whisk reads distinct from
+   sibling apps); hairline strokes and soft shadows. Type is Baloo 2 (chunky
+   display), Nunito (warm body/UI) and Silkscreen (pixel chrome).
    Token *names* are unchanged so all downstream CSS re-skins for free. */
 
 :root {
@@ -10,6 +11,7 @@
   --font-sans: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-serif: 'Baloo 2', system-ui, 'Trebuchet MS', sans-serif; /* chunky display */
   --font-mono: 'Silkscreen', ui-monospace, 'SF Mono', 'Menlo', monospace; /* pixel chrome */
+  --font-slab: 'Zilla Slab', Rockwell, 'Roboto Slab', Georgia, serif; /* Poolsuite-style window wordmark */
   --font-num: 'Nunito', ui-monospace, monospace; /* readable tabular fallback for counts */
 
   /* ---- Type scale (product: fixed rem, ~1.2 ratio) ---- */
@@ -36,15 +38,15 @@
   --sp-8: 4rem;
   --sp-9: 6rem;
 
-  /* ---- Radii — chunky, retro-OS ---- */
-  --r-sm: 8px;
-  --r-md: 10px;
+  /* ---- Radii — Poolsuite window: small, crisp corners ---- */
+  --r-sm: 6px;
+  --r-md: 6px; /* match the landing window's corners */
   --r-lg: 10px;
   --r-xl: 14px;
   --r-pill: 999px;
 
-  /* ---- Signature 2px ink stroke (the Poolsuite outline) ---- */
-  --stroke: 2px solid var(--ink);
+  /* ---- Signature hairline stroke (the Poolsuite window outline) ---- */
+  --stroke: 1px solid var(--border-strong);
   --chrome: #EAE0D2; /* warm title-bar base for pinstriped windows */
 
   /* ---- Motion ---- */
@@ -75,46 +77,46 @@
 [data-theme='light'] {
   color-scheme: light;
 
-  --bg: #F9EFE4;              /* warm cream — the desktop */
+  --bg: #F4ECDE;              /* warm cream — the desktop */
   --surface: #FFFDF9;         /* warm white — window bodies, cards */
-  --surface-2: #F1E2CF;       /* deeper sand — panels, toolbars, insets */
-  --surface-sunk: #F1E2CF;    /* wells, inputs */
+  --surface-2: #ECDECB;       /* deeper sand — panels, toolbars, insets */
+  --surface-sunk: #ECDECB;    /* wells, inputs */
 
   --ink: #241C1C;             /* warm near-black — text + strokes */
-  --ink-2: #7A675F;           /* muted brown-grey — secondary text */
-  --ink-3: #8A776E;           /* small meta — AA on paper & surface-2 */
+  --ink-2: #6F5F57;           /* muted brown-grey — secondary text */
+  --ink-3: #857269;           /* small meta — AA on paper & surface-2 */
 
-  --primary: #F47B5F;         /* sunset coral — fills, borders, the coral pop */
-  --primary-hover: #E0684C;
-  --primary-ink: #B84027;     /* deepened coral — AA-legible coral TEXT & links */
-  --primary-soft: #F6D5D5;    /* soft rose tint behind primary things */
-  --primary-contrast: #241C1C; /* ink text sits on coral fills (6.2:1) */
+  --primary: #159C89;         /* jade — fills, borders, the pop */
+  --primary-hover: #0F8878;
+  --primary-ink: #0B6E60;     /* deep jade — AA-legible jade TEXT & links */
+  --primary-soft: #CDE9E3;    /* soft jade tint behind primary things */
+  --primary-contrast: #241C1C; /* ink text sits on jade fills (~5:1) */
 
-  --accent: #F5A623;          /* tangerine — highlights, interestingness */
-  --accent-ink: #B5760F;      /* tangerine text on paper — AA */
+  --accent: #F2A93B;          /* amber — highlights, interestingness */
+  --accent-ink: #B5760F;      /* amber text on paper — AA */
   --accent-soft: #F7CE46;     /* poolside yellow tint */
 
-  --border: #E7D8C4;          /* soft warm hairline — subtle dividers */
+  --border: #E6D8C4;          /* soft warm hairline — subtle dividers */
   --border-strong: #241C1C;   /* ink — the signature stroke color */
   --ring: #86C2E4;            /* sky blue — focus outline */
 
-  --good: #3E8F88;            /* aqua (darkened for AA text) */
-  --warn: #B5760F;            /* tangerine */
+  --good: #3E8F5B;            /* leaf green (distinct from jade primary) */
+  --warn: #B5760F;            /* amber */
   --danger: #D94E3A;          /* sunset red */
 
-  /* Cluster identity — the sunset spectrum; each type reads at a glance.
-     Deep-cuts borrows poolside sunshine. */
-  --cl-people: #D8695B;       /* flamingo/coral (darkened for AA) */
-  --cl-events: #B5760F;       /* tangerine */
-  --cl-places: #3E7FA8;       /* sky (darkened for AA) */
-  --cl-concepts: #3E8F88;     /* aqua */
-  --cl-other: #A9791A;        /* sunshine — deep cuts */
+  /* Cluster identity — five distinct hues, none equal to the jade primary;
+     each type reads at a glance. */
+  --cl-people: #C6564E;       /* terracotta */
+  --cl-events: #B5760F;       /* amber */
+  --cl-places: #3E7FA8;       /* sky */
+  --cl-concepts: #6E56C8;     /* violet (was aqua — avoids jade clash) */
+  --cl-other: #A9791A;        /* gold — deep cuts */
 
-  /* Hard offset shadows — zero blur, warm-black. The signature elevation. */
-  --shadow-sm: 3px 3px 0 rgba(36, 28, 28, 0.85);
-  --shadow-md: 5px 5px 0 rgba(36, 28, 28, 0.85);
-  --shadow-lg: 8px 8px 0 rgba(36, 28, 28, 0.85);
+  /* Soft blurred shadows — warm Poolsuite tint. The signature elevation. */
+  --shadow-sm: 0 1px 2px rgba(90, 40, 40, 0.1), 0 3px 10px -6px rgba(90, 40, 40, 0.22);
+  --shadow-md: 0 2px 4px rgba(90, 40, 40, 0.1), 0 8px 20px -8px rgba(90, 40, 40, 0.28);
+  --shadow-lg: 0 10px 34px -8px rgba(90, 40, 40, 0.35);
 
   --graph-line: #C9B49A;
-  --graph-glow: rgba(244, 123, 95, 0.28);
+  --graph-glow: rgba(21, 156, 137, 0.28);
 }

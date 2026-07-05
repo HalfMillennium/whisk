@@ -109,18 +109,19 @@ img { max-width: 100%; display: block; }
 }
 
 /* ---------- shared control primitives ---------- */
-/* Chunky, tactile Poolsuite buttons: 2px ink stroke, hard offset shadow,
-   hover lifts up-left, press pushes down into its own shadow. */
+/* Poolsuite window controls: 1px hairline border with a 2px bottom edge, soft
+   shadow; hover lifts gently, press settles down a touch. */
 .btn {
   --_bg: var(--surface);
   --_fg: var(--ink);
-  --_bd: var(--ink);
+  --_bd: var(--border-strong);
   display: inline-flex;
   align-items: center;
   gap: var(--sp-2);
   padding: 0.55rem 0.95rem;
   border-radius: var(--r-md);
-  border: 2px solid var(--_bd);
+  border: 1px solid var(--_bd);
+  border-bottom-width: 2px;
   background: var(--_bg);
   color: var(--_fg);
   font-family: var(--font-serif);
@@ -131,8 +132,8 @@ img { max-width: 100%; display: block; }
     border-color var(--dur-1) var(--ease-out-quart),
     transform var(--dur-1) var(--ease-out-quart), box-shadow var(--dur-1) var(--ease-out-quart);
 }
-.btn:hover { transform: translate(-1px, -1px); box-shadow: var(--shadow-md); }
-.btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
+.btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn:active { transform: translateY(1px); box-shadow: var(--shadow-sm); }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn:disabled:hover { transform: none; box-shadow: var(--shadow-sm); }
 
@@ -160,7 +161,7 @@ img { max-width: 100%; display: block; }
   gap: 0.35rem;
   padding: 0.22rem 0.6rem;
   border-radius: var(--r-pill);
-  border: 2px solid var(--ink);
+  border: 1px solid var(--border-strong);
   background: var(--primary-soft);
   color: var(--ink);
   font-family: var(--font-mono);

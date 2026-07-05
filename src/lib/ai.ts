@@ -43,6 +43,34 @@ export async function expandQuery(query: string): Promise<string[]> {
   return out?.terms?.slice(0, 5) ?? [];
 }
 
+// ---------------------------------------------------------- trend generalization
+/**
+ * Turn raw, often newsy Google Trends titles into evergreen, Wikipedia-friendly
+ * topic phrases for "trending rabbit holes". Returns a map keyed by the original
+ * trend title. With no AI, callers fall back to the raw trend title itself.
+ */
+export async function generalizeTrends(
+  trends: Array<{ title: string; newsTitles?: string[] }>,
+): Promise<Map<string, string>> {
+  const map = new Map<string, string>();
+  if (!AI_ENABLED || !trends.length) return map;
+
+  const compact = trends.slice(0, 12).map((t) => ({
+    t: t.title,
+    n: (t.newsTitles ?? []).slice(0, 3),
+  }));
+  const out = await chatJSON<{ topics: Record<string, string> }>(
+    'You map live Google search trends to a single evergreen, encyclopedic topic each — the kind of thing that has a rich Wikipedia article worth falling down a rabbit hole from. Use the trend only as a clue: prefer the person\'s body of work, the historical/cultural/scientific context, the sport/discipline, the place, the movement, or the era. Avoid breaking-news phrasing, allegations, deaths, disasters, and scores. Keep it concise (1-4 words, no punctuation). Return JSON {"topics": {trendTitle: topicPhrase}} with trendTitle copied verbatim.',
+    `Trends: ${JSON.stringify(compact)}`,
+  );
+  if (out?.topics) {
+    for (const [title, topic] of Object.entries(out.topics)) {
+      if (topic?.trim()) map.set(title, topic.trim());
+    }
+  }
+  return map;
+}
+
 // --------------------------------------------------------------- why it matched
 export function fallbackMatchReason(query: string, page: Page): string {
   const bits: string[] = [];
