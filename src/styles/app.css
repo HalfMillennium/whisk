@@ -410,6 +410,9 @@
 }
 .cmd__input {
   flex: 1;
+  /* Inputs refuse to shrink below their intrinsic size in flex rows,
+     which pushes the submit button off-screen on narrow viewports. */
+  min-width: 0;
   border: none;
   background: transparent;
   outline: none;
@@ -1626,6 +1629,13 @@
 @media (max-width: 640px) {
   .cmd__go-label {
     display: none;
+  }
+  .cmd--hero .cmd__bar {
+    padding: 0.4rem 0.4rem 0.4rem 0.85rem;
+  }
+  .cmd--hero .cmd__input {
+    /* 16px minimum — anything smaller makes iOS zoom the page on focus */
+    font-size: var(--text-md);
   }
   .home__title {
     letter-spacing: -0.02em;

@@ -85,6 +85,14 @@ export function CommandSearch(props: Props) {
   // Autofocus pops the software keyboard and scrolls the page on touch devices — desktop only.
   const shouldAutofocus = props.autofocus === true && matchMedia('(pointer: fine)').matches;
 
+  // The full placeholder gets clipped mid-sentence on phone-width screens.
+  const narrowQuery = matchMedia('(max-width: 640px)');
+  const [narrow, setNarrow] = createSignal(narrowQuery.matches);
+  const onNarrowChange = (e: MediaQueryListEvent) => setNarrow(e.matches);
+  narrowQuery.addEventListener('change', onNarrowChange);
+  onCleanup(() => narrowQuery.removeEventListener('change', onNarrowChange));
+  const placeholder = () => (narrow() ? 'Search Wikipedia…' : 'Search Wikipedia like a rabbit hole…');
+
   return (
     <div
       class="cmd"
@@ -113,7 +121,7 @@ export function CommandSearch(props: Props) {
           // eslint-disable-next-line
           autofocus={shouldAutofocus}
           value={value()}
-          placeholder="Search Wikipedia like a rabbit hole…"
+          placeholder={placeholder()}
           aria-label="Search query"
           autocomplete="off"
           spellcheck={false}
