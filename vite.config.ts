@@ -48,8 +48,12 @@ function trendsDevProxy() {
       const env = loadEnv(server.config.mode, process.cwd(), '')
       if (env.TRENDS_GEO && !process.env.TRENDS_GEO) process.env.TRENDS_GEO = env.TRENDS_GEO
 
-      server.middlewares.use('/api/trends', async (req: any, res: any, next: any) => {
-        if (req.method && req.method !== 'GET') return next()
+      // Registered without a mount path: connect's `use(path, …)` prefix-matches,
+      // so it would also intercept module requests like `/api/trends.ts` and
+      // answer them with JSON, breaking any route that imports that file.
+      server.middlewares.use(async (req: any, res: any, next: any) => {
+        const path = (req.url || '').split('?')[0]
+        if (path !== '/api/trends' || (req.method && req.method !== 'GET')) return next()
         try {
           const geo = new URL(req.url, 'http://localhost').searchParams.get('geo') ?? undefined
           const { status, json } = await runTrends(geo)

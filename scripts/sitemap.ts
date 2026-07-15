@@ -10,6 +10,7 @@ type Route = { path: string; changefreq: string; priority: string }
 // Curated non-article routes worth indexing (primary nav destinations).
 const STATIC_ROUTES: Route[] = [
   { path: '/', changefreq: 'weekly', priority: '1.0' },
+  { path: '/daily', changefreq: 'daily', priority: '0.8' },
   { path: '/blog', changefreq: 'weekly', priority: '0.9' },
   { path: '/search', changefreq: 'monthly', priority: '0.6' },
   { path: '/path', changefreq: 'monthly', priority: '0.6' },

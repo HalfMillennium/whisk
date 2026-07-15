@@ -1,8 +1,10 @@
-import { For, Show, Suspense, createResource } from 'solid-js';
+import { For, Show, createResource } from 'solid-js';
 import { A } from '@solidjs/router';
 import { CommandSearch } from '../components/CommandSearch';
 import { AI_ENABLED } from '../lib/ai';
 import { getTrendingHoles } from '../lib/trends';
+import { getOnThisDay } from '../lib/onThisDay';
+import { RECOMMENDED_SEARCHES, RECOMMENDED_TRAILS } from '../lib/recommended';
 import { IconSpiral } from '../components/icons';
 
 // Exact Poolsuite title-bar glyphs (base64 PNGs from the reference window),
@@ -14,25 +16,23 @@ const ICON_TV =
 const ICON_CONTRACT =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWAQMAAAD+ev54AAAABlBMVEUAAAAAAAClZ7nPAAAAAXRSTlMAQObYZgAAABdJREFUCNdjYGBmwIH/gDEu8B+McWoHALXwBCGzcXiRAAAAAElFTkSuQmCC';
 
-const EXAMPLES = [
-  'forgotten disasters',
-  'ancient frauds',
-  'scientists mocked for being right',
-  'failed utopian communities',
-  'abandoned cities',
-];
-
-// Fallback trails shown when live trends can't be loaded, so the section is
-// never empty.
-const FEATURED = [
-  { label: 'Napoleon → Canning', from: 'Napoleon', to: 'Canning' },
-  { label: 'Medici Bank → Modern banking', from: 'Medici Bank', to: 'Bank' },
-  { label: 'Nikola Tesla → Coney Island', from: 'Nikola Tesla', to: 'Coney Island' },
-  { label: 'Tulip mania → Financial bubble', from: 'Tulip mania', to: 'Economic bubble' },
-];
-
 export default function Home() {
   const [holes] = createResource(getTrendingHoles);
+  // Settled-only reads (prior art: RabbitHole.tsx): a pending first read —
+  // even via `.latest` — would suspend AppShell's boundary and blank the whole
+  // route. This way the curated recommendations paint on the first frame and
+  // live trends swap in whenever they resolve. On failure the resource settles
+  // to [] and the statics stay.
+  const live = () => (holes.state === 'ready' ? holes() : undefined);
+
+  // Below-the-fold anniversary section; hidden entirely until data arrives.
+  const [otd] = createResource(() => getOnThisDay(5));
+  const otdItems = () => (otd.state === 'ready' ? otd() : undefined);
+  const otdDateLabel = new Date().toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
 
   return (
     <div class="home">
@@ -65,46 +65,30 @@ export default function Home() {
 
             <div class="home__examples" aria-label="Example searches">
               <span class="home__examples-label mono">Try</span>
-              {/* Local Suspense: only the pills wait on the trends resource — the
-                  hero renders immediately instead of blanking the whole route. */}
-              <Suspense
+              <Show
+                when={live()?.length}
                 fallback={
-                  <For each={[0, 1, 2, 3, 4]}>
-                    {(i) => (
-                      <span
-                        class="example-pill example-pill--loading"
-                        style={{ width: `${5 + (i % 3) * 2}rem` }}
-                        aria-hidden="true"
-                      />
+                  <For each={RECOMMENDED_SEARCHES.slice(0, 5)}>
+                    {(ex) => (
+                      <A href={`/search?q=${encodeURIComponent(ex)}`} class="example-pill">
+                        {ex}
+                      </A>
                     )}
                   </For>
                 }
               >
-                <Show
-                  when={holes()?.length}
-                  fallback={
-                    <For each={EXAMPLES}>
-                      {(ex) => (
-                        <A href={`/search?q=${encodeURIComponent(ex)}`} class="example-pill">
-                          {ex}
-                        </A>
-                      )}
-                    </For>
-                  }
-                >
-                  <For each={holes()!.slice(0, 5)}>
-                    {(h, i) => (
-                      <A
-                        href={`/search?q=${encodeURIComponent(h.trend)}`}
-                        class="example-pill stream-in"
-                        style={{ 'animation-delay': `${i() * 80}ms` }}
-                      >
-                        {h.trend}
-                      </A>
-                    )}
-                  </For>
-                </Show>
-              </Suspense>
+                <For each={live()!.slice(0, 5)}>
+                  {(h, i) => (
+                    <A
+                      href={`/search?q=${encodeURIComponent(h.trend)}`}
+                      class="example-pill stream-in"
+                      style={{ 'animation-delay': `${i() * 80}ms` }}
+                    >
+                      {h.trend}
+                    </A>
+                  )}
+                </For>
+              </Show>
             </div>
           </div>
         </div>
@@ -118,49 +102,72 @@ export default function Home() {
           </p>
         </div>
         <div class="featured-grid">
-          {/* Local Suspense keeps loading contained to this grid. */}
-          <Suspense
+          <Show
+            when={live()?.length}
             fallback={
-              <For each={FEATURED}>
-                {() => <div class="featured-card featured-card--loading" aria-hidden="true" />}
-              </For>
-            }
-          >
-            <Show
-              when={holes()?.length}
-              fallback={
-                <For each={FEATURED}>
-                  {(f) => (
-                    <A
-                      href={`/path?from=${encodeURIComponent(f.from)}&to=${encodeURIComponent(f.to)}`}
-                      class="featured-card"
-                    >
-                      <IconSpiral size={16} />
-                      <span>{f.label}</span>
-                    </A>
-                  )}
-                </For>
-              }
-            >
-              <For each={holes()}>
-                {(h, i) => (
+              <For each={RECOMMENDED_TRAILS}>
+                {(f) => (
                   <A
-                    href={`/path?from=${encodeURIComponent(h.title)}`}
-                    class="featured-card stream-in"
-                    style={{ 'animation-delay': `${i() * 80}ms` }}
+                    href={`/path?from=${encodeURIComponent(f.from)}&to=${encodeURIComponent(f.to)}`}
+                    class="featured-card"
                   >
                     <IconSpiral size={16} />
-                    <span>{h.label}</span>
-                    <Show when={h.trafficLabel}>
-                      <span class="featured-card__traffic mono">{h.trafficLabel}</span>
-                    </Show>
+                    <span>{f.label}</span>
                   </A>
                 )}
               </For>
-            </Show>
-          </Suspense>
+            }
+          >
+            <For each={live()}>
+              {(h, i) => (
+                <A
+                  href={`/path?from=${encodeURIComponent(h.title)}`}
+                  class="featured-card stream-in"
+                  style={{ 'animation-delay': `${i() * 80}ms` }}
+                >
+                  <IconSpiral size={16} />
+                  <span>{h.label}</span>
+                  <Show when={h.trafficLabel}>
+                    <span class="featured-card__traffic mono">{h.trafficLabel}</span>
+                  </Show>
+                </A>
+              )}
+            </For>
+          </Show>
         </div>
       </section>
+
+      <Show when={otdItems()?.length}>
+        <section class="home__otd shell">
+          <div class="home__featured-head">
+            <h2 class="home__section-title">On this day</h2>
+            <p class="home__ai-note mono">{otdDateLabel} · from Wikipedia</p>
+          </div>
+          <ul class="otd-list">
+            <For each={otdItems()}>
+              {(item, i) => (
+                <li class="otd-item stream-in" style={{ 'animation-delay': `${i() * 80}ms` }}>
+                  <Show when={item.year}>
+                    <span class="otd-item__year mono">{item.year}</span>
+                  </Show>
+                  <div class="otd-item__body">
+                    <p class="otd-item__text">{item.text}</p>
+                    <span class="otd-item__links">
+                      <For each={item.pages}>
+                        {(p) => (
+                          <A href={`/wiki/${encodeURIComponent(p.title)}`} class="otd-chip">
+                            {p.title}
+                          </A>
+                        )}
+                      </For>
+                    </span>
+                  </div>
+                </li>
+              )}
+            </For>
+          </ul>
+        </section>
+      </Show>
     </div>
   );
 }

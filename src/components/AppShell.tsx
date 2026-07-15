@@ -1,7 +1,7 @@
 import { Suspense, type ParentProps } from 'solid-js';
 import { A, useLocation } from '@solidjs/router';
 import { SaveDrawer } from './SaveDrawer';
-import { IconWhisk, IconSpiral, IconSearch, IconCite } from './icons';
+import { IconWhisk, IconSpiral, IconSearch, IconCite, IconSun } from './icons';
 
 export function AppShell(props: ParentProps) {
   const location = useLocation();
@@ -26,6 +26,10 @@ export function AppShell(props: ParentProps) {
             <A href="/path" class="nav__link" aria-label="Rabbit holes" title="Rabbit holes">
               <IconSpiral size={15} />
               <span class="nav__link-label">Rabbit holes</span>
+            </A>
+            <A href="/daily" class="nav__link" aria-label="Daily challenge" title="Daily challenge">
+              <IconSun size={15} />
+              <span class="nav__link-label">Daily</span>
             </A>
             <A href="/blog" class="nav__link" aria-label="Blog" title="Blog">
               <IconCite size={15} />

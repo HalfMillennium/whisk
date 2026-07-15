@@ -24,53 +24,12 @@ const MAX_TRENDS = 8;
 const PARSE_LIMIT = 24; // parse extra so the safety filter can trim without starving MAX_TRENDS.
 const TTL_MS = 1000 * 60 * 60 * 3; // 3h — matches the client cache + s-maxage.
 
-// Deterministic safety-cleaning layer. Google Trends is raw real-world news and
-// routinely surfaces violent crime, disasters, death, and explicit content —
-// none of which belong seeding a "fall down a rabbit hole" experience. We drop
-// any trend whose title OR associated news headlines match this blocklist. This
-// runs server-side (before the client ever sees the feed) and is fully
-// independent of the optional AI layer, so the guarantee holds with no API key.
-// Word boundaries matter: `\bfire\b` must not match "fireworks".
-const BLOCKLIST = new RegExp(
-  [
-    // violence / crime
-    'shoot(ing|er|out)?', 'gunm(a|e)n', 'gunfire', '\\bshot\\b', '\\bguns?\\b',
-    'stab(bing|bed)?', 'murder', 'homicide', 'manslaughter', 'kill(ed|ing|er)?',
-    'massacre', 'assault', '\\brape(d|s|ist)?\\b', 'molest', 'kidnap', 'abduct',
-    'hostage', 'terror(ism|ist)?', 'bomb(ing|er)?', 'explos(ion|ive)',
-    'weapon', '\\briot', 'assassinat', 'execution', 'executed', 'behead',
-    '\\bgang\\b', 'lynch', 'brawl', 'shooter',
-    // death
-    '\\bdead\\b', '\\bdeath', '\\bdies\\b', '\\bdied\\b', 'fatal', 'fatalit',
-    'obituary', 'deceased', 'corpse',
-    // disasters / accidents
-    'earthquake', 'wildfire', '\\bfire\\b', '\\bblaze\\b', '\\bflood', 'hurricane',
-    'tornado', 'cyclone', 'typhoon', 'tsunami', 'landslide', 'mudslide',
-    'avalanche', '\\bstorm\\b', '\\bcrash', 'collapse', 'derail', 'disaster',
-    'catastrophe', 'evacuat', 'wreck',
-    // self-harm
-    'suicide', 'overdose', 'self[-\\s]?harm',
-    // sexual / explicit
-    '\\bporn', 'pornograph', '\\bnude', '\\bnsfw\\b', 'sex tape', 'onlyfans',
-    '\\bxxx\\b', 'explicit', 'prostitut',
-    // drugs / illegal
-    'cartel', 'cocaine', 'heroin', 'fentanyl', 'traffick', 'smuggl',
-    // hate
-    '\\bnazi', 'genocide', 'ethnic cleansing',
-  ].join('|'),
-  'i',
-);
-
-/** True if a trend is safe to surface (title + news headlines clear the blocklist). */
-export function isSafeTrend(t: RawTrend): boolean {
-  const hay = [t.title, ...(t.newsTitles ?? [])].join(' ');
-  return !BLOCKLIST.test(hay);
-}
-
-/** Drop trends flagged by the deterministic safety filter. */
-export function cleanTrends(items: RawTrend[]): RawTrend[] {
-  return items.filter(isSafeTrend);
-}
+// Deterministic safety-cleaning layer — see src/lib/safety.ts. We drop any
+// trend whose title OR associated news headlines match the blocklist, server-
+// side, before the client ever sees the feed. Re-exported here so existing
+// consumers (tests) keep their import path.
+import { isSafeTrend, cleanTrends } from '../src/lib/safety.ts';
+export { isSafeTrend, cleanTrends };
 
 // Module-scoped in-memory cache. Serverless instances are ephemeral, so the
 // HTTP Cache-Control header below is the real cross-request cache; this just

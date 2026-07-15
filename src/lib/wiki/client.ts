@@ -124,6 +124,13 @@ export function restRelated<T>(title: string): Promise<T> {
   return getJSON<T>(`${REST}/page/related/${encodeURIComponent(title)}`);
 }
 
+export type OnThisDayType = 'selected' | 'events' | 'births' | 'deaths' | 'holidays';
+
+/** Wikipedia's daily anniversary feed (CORS-enabled, keyless). mm/dd zero-padded. */
+export function restOnThisDay<T>(type: OnThisDayType, mm: string, dd: string): Promise<T> {
+  return getJSON<T>(`${REST}/feed/onthisday/${type}/${mm}/${dd}`);
+}
+
 // --- Analytics / Pageviews ---------------------------------------------------
 export async function pageviews(title: string, days = 30): Promise<number | undefined> {
   const end = new Date();

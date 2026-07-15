@@ -6,6 +6,7 @@ const Home = lazy(() => import('./routes/Home'));
 const Search = lazy(() => import('./routes/Search'));
 const Article = lazy(() => import('./routes/Article'));
 const RabbitHole = lazy(() => import('./routes/RabbitHole'));
+const Daily = lazy(() => import('./routes/Daily'));
 const Collections = lazy(() => import('./routes/Collections'));
 const Blog = lazy(() => import('./routes/Blog'));
 const BlogArticle = lazy(() => import('./routes/BlogArticle'));
@@ -20,6 +21,7 @@ export const routes: RouteDefinition[] = [
       { path: '/search', component: Search },
       { path: '/wiki/:title', component: Article },
       { path: '/path', component: RabbitHole },
+      { path: '/daily', component: Daily },
       { path: '/collections', component: Collections },
       { path: '/blog', component: Blog },
       { path: '/blog/:slug', component: BlogArticle },
