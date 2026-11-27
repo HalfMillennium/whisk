@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "test": "vitest run",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "ads:render": "node ads/render.ts",
+    "ads:meta": "node ads/meta.ts",
+    "ads:google": "node ads/google.ts"
   },
   "dependencies": {
     "@solidjs/router": "^0.16.1",

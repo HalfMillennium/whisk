@@ -6,3 +6,6 @@ dist-ssr
 .DS_Store
 .vite
 coverage
+
+# rendered ad creatives / API manifests (regenerate with npm run ads:render)
+ads/out
